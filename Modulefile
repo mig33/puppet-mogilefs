@@ -1,0 +1,8 @@
+name    'yuav-mogilefs'
+version '1.0.0'
+author  'Jon Skarpeteig'
+license 'Apache2'
+project_page 'http://github.com/Yuav/puppet-mogilefs'
+source  'https://github.com/Yuav/puppet-mogilefs'
+summary 'Puppet module for mogilefs'
+description 'This module installs and manages mogilefs. Check README for details.'

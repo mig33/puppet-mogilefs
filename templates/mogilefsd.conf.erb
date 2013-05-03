@@ -1,0 +1,25 @@
+#daemonize = 1
+db_dsn = DBI:<%= scope.lookupvar('mogilefs::mogilefsd::dbtype')%>:<%= scope.lookupvar('mogilefs::mogilefsd::dbname')%><%= options.has_key?('dsn') ? ':' + options['dsn'] : '' %>
+#db_dsn = DBI:mysql:mogilefs:host=localhost;port=3306;mysql_connect_timeout=5
+db_user = <%= options['db_user'] %>
+db_pass = <%= options['db_pass'] %>
+listen = <%= options.has_key?('listen') ? options['listen'] : '127.0.0.1:7001' %>
+node_timeout = 5
+conf_port = 7001
+listener_jobs = 10
+delete_jobs = 1
+replicate_jobs = 10
+reaper_jobs = 1
+max_handles = 0
+max_disk_age = 5
+rebalance_ignore_missing = 1
+repl_use_get_port = 0
+
+# In MB
+min_free_space = 10000
+
+# Time in seconds to wait for storage node responses
+node_timeout = 2
+
+# Time in seconds to wait for connection to storage node
+conn_timeout = 2
