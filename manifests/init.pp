@@ -43,6 +43,7 @@ class mogilefs (
   $tracker           = '',
   $mogilefsd_service = true,
   $mogstored_service = true,
+  $config_dir        = '/etc/mogilefs',
   $dbtype            = 'SQLite',
   $dbname            = 'mogilefs',
   $datapath          = '/var/mogdata',
@@ -54,7 +55,6 @@ class mogilefs (
   # Core parameters
   $package = 'MogileFS::Server'
   $username = 'mogilefs'
-  $config_dir = '/etc/mogilefs'
   $config_file_mode = '0644'
   $config_file_owner = $mogilefs::username
   $config_file_group = $mogilefs::username
@@ -67,6 +67,11 @@ class mogilefs (
   $manage_package = $mogilefs::absent ? {
     true  => 'absent',
     false => $mogilefs::version,
+  }
+
+  $manage_package_dependencies = $mogilefs::absent ? {
+    true  => 'absent',
+    false => 'installed',
   }
 
   $manage_service_enable = $mogilefs::disable ? {
@@ -108,14 +113,14 @@ class mogilefs (
     ensure     => 'present',
     comment    => 'MogileFS user',
     shell      => '/bin/false',
-    home       => '/var/mogdata',
+    home       => $mogilefs::datapath,
     managehome => false,
   }
 
   # Configuration dir
-  file { '/etc/mogilefs':
+  file { $mogilefs::config_dir:
     ensure => 'directory',
-    path   => '/etc/mogilefs',
+    path   => $mogilefs::config_dir,
     mode   => '0644',
     owner  => $mogilefs::config_file_owner,
     group  => $mogilefs::config_file_group,
@@ -139,7 +144,7 @@ class mogilefs (
 
   # Client
   package { 'MogileFS::Utils':
-    ensure   => $mogilefs::manage_package,
+    ensure   => $mogilefs::manage_package_dependencies,
     noop     => $mogilefs::noops,
     provider => 'cpanm',
     require  => Package['cpanminus'],
@@ -161,8 +166,8 @@ class mogilefs (
     }
 
     class { 'mogilefs::mogilefsd':
-      dbtype  => $mogilefs::dbtype,
-      dbname  => $mogilefs::real_dbname
+      dbtype => $mogilefs::dbtype,
+      dbname => $mogilefs::real_dbname
     }
   }
 }

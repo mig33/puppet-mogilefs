@@ -44,17 +44,23 @@ class mogilefs::mogstored inherits mogilefs {
     noop    => $mogilefs::noops,
   }
 
+  # iowait stats dependency
+  package { 'sysstat':
+    ensure   => $mogilefs::manage_package_dependencies,
+    noop     => $mogilefs::noops,
+  }
+
   # Add mogstored host to tracker
   exec { 'mogilefs_addhost':
     path    => ['/bin', '/usr/local/bin', '/usr/bin'],
-    command => "mogadm host add ${::hostname} --ip=${::fqdn} --status=alive",
-    unless  => "mogadm host list | grep \s${::hostname}",
+    command => "mogadm --config=$mogilefs::config_dir/mogilefsd.conf host add ${::hostname} --ip=${::fqdn} --status=alive",
+    unless  => "mogadm --config=$mogilefs::config_dir/mogilefsd.conf host list | grep \s${::hostname}",
     require => Service[mogilefsd]
   }
 
   exec { 'mogilefs_enablehost':
     path    => ['/bin', '/usr/local/bin', '/usr/bin'],
-    command => "mogadm host mark ${::hostname} alive",
-    unless  => "mogadm host list | grep ^${::hostname}.*alive",
+    command => "mogadm --config=$mogilefs::config_dir/mogilefsd.conf host mark ${::hostname} alive",
+    unless  => "mogadm --config=$mogilefs::config_dir/mogilefsd.conf host list | grep ^${::hostname}.*alive",
   }
 }

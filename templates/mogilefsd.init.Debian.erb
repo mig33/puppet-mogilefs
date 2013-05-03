@@ -19,8 +19,8 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin
 DESC="Mogilefsd daemon"
 NAME=mogilefsd
 DAEMON=/usr/local/bin/$NAME
-DAEMON_ARGS="--config=/etc/mogilefs/mogilefsd.conf"
-RUNASUSER=mogilefs
+DAEMON_ARGS="--config=<%= config_dir%>/mogilefsd.conf"
+RUNASUSER=<%= username%>
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
