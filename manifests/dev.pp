@@ -175,7 +175,7 @@ class mogilefs::dev {
   }
 
   # Add domain
-  exec { 'fartwo_dev8':
+  exec { 'add_domain':
     path    => ['/bin', '/usr/local/bin', '/usr/bin'],
     command => "mogadm --trackers=$mogilefs::trackers domain add toast",
     unless  => "mogadm --trackers=$mogilefs::trackers domain list | grep toast",
