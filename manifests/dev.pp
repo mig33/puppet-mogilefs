@@ -174,4 +174,11 @@ class mogilefs::dev {
     require => Service[mogilefsd]
   }
 
+  # Add domain
+  exec { 'fartwo_dev8':
+    path    => ['/bin', '/usr/local/bin', '/usr/bin'],
+    command => "mogadm --trackers=$mogilefs::trackers domain add toast",
+    unless  => "mogadm --trackers=$mogilefs::trackers domain list | grep toast",
+    require => Service[mogilefsd]
+  }
 }
