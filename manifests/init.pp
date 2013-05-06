@@ -37,27 +37,33 @@
 #   this to true. Default: false
 #
 class mogilefs (
-  $options           = {
+  $options                = {
   }
   ,
-  $tracker           = '',
-  $mogilefsd_service = true,
-  $mogstored_service = true,
-  $config_dir        = '/etc/mogilefs',
-  $dbtype            = 'SQLite',
-  $dbname            = 'mogilefs',
-  $datapath          = '/var/mogdata',
-  $version           = 'present',
-  $absent            = false,
-  $disable           = false,
-  $audit_only        = false,
-  $noops             = false) {
+  $trackers               = "$::fqdn:7001,$::hostname:7001",
+  $mogilefsd_service      = true,
+  $mogstored_service      = true,
+  $config_dir             = '/etc/mogilefs',
+  $dbtype                 = 'SQLite',
+  $dbname                 = 'mogilefs',
+  $datapath               = '/var/mogdata',
+  $version                = 'present',
+  $mogstored_init_content = undef,
+  $absent                 = false,
+  $disable                = false,
+  $audit_only             = false,
+  $noops                  = false) {
   # Core parameters
   $package = 'MogileFS::Server'
   $username = 'mogilefs'
   $config_file_mode = '0644'
   $config_file_owner = $mogilefs::username
   $config_file_group = $mogilefs::username
+
+  $manage_mogstored_init_content = $mogstored_init_content ? {
+    undef   => template('mogilefs/mogstored.init.Debian.erb'),
+    default => template('mogilefs/mogstored.init.Debian.erb')
+  }
 
   if !inline_template('<%= options.class == Hash %>') {
     fail('Option parameter must be hash, or empty')
@@ -71,7 +77,7 @@ class mogilefs (
 
   $manage_package_dependencies = $mogilefs::absent ? {
     true  => 'absent',
-    false => 'installed',
+    false => 'present',
   }
 
   $manage_service_enable = $mogilefs::disable ? {

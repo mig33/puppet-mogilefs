@@ -4,6 +4,7 @@ This is a Puppet module for mogilefs.
 
 Released under the terms of Apache 2 License.
 
+Tested with Ubuntu 12.04 LTS
 
 ## USAGE - Basic management
 
@@ -35,6 +36,9 @@ Released under the terms of Apache 2 License.
           noops => true
         }
 
+* Dev environment behaving like the [Quickstart Guide](https://code.google.com/p/mogilefs/wiki/QuickStartGuide)
+
+		class { 'mogilefs::dev': }
 
 ## TESTING
 [![Build Status](https://travis-ci.org/Yuav/puppet-mogilefs.png?branch=master)](https://travis-ci.org/Yuav/puppet-mogilefs)

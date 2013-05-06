@@ -1,0 +1,21 @@
+#!/bin/bash
+BASEDIR="/var/mogdata/"
+PERL5LIB="$PERL5LIB"
+MOGSTORED="mogstored"
+HOSTS="127.0.0.20 127.0.0.25 127.0.15.5 127.0.15.10"
+if [ $1 = "start" ] ; then
+    echo "Starting a few mogstoreds"
+    for host in $HOSTS ; do
+        echo "starting host $host"
+        $MOGSTORED -d --httplisten $host:7500 --mgmtlisten $host:7501 \
+            --docroot ${BASEDIR}${host}
+    done
+elif [ $1 = "stop" ] ; then
+    echo "Stopping mogstoreds"
+    for host in $HOSTS ; do
+        echo "shutdown" | nc $host 7501
+    done
+else 
+    echo "$1 not supported. Only start/stop"
+    exit 1
+fi

@@ -16,11 +16,11 @@
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin
-DESC="mogstored daemon"
+DESC="Mogstored daemon"
 NAME=mogstored
 DAEMON=/usr/local/bin/$NAME
-DAEMON_ARGS="--config=<%= config_dir%>/mogstored.conf"
-RUNASUSER=<%= username%>
+DAEMON_ARGS="--config=<%= scope.lookupvar("mogilefs::config_dir") %>/mogstored.conf"
+RUNASUSER=<%= scope.lookupvar("mogilefs::username") %>
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
