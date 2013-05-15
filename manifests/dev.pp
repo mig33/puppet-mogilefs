@@ -9,7 +9,7 @@ class mogilefs::dev (
   ,
   $dbtype                 = 'SQLite',
   $dbname                 = 'mogilefs',
-  $rootfolder             = '/var/mogdata',
+  $datapath               = '/var/mogdata',
   $mogstored_init_content = template('mogilefs/dev/mogstored.init.Debian.erb'))
 {
   class { 'mogilefs':
@@ -17,6 +17,7 @@ class mogilefs::dev (
     dbname            => $mogilefs::dev::dbname,
     mogstored_service => false,
     trackers          => '127.0.1.5:7001',
+    datapath          => $datapath,
     options           => $options,
   }
 
@@ -57,10 +58,7 @@ class mogilefs::dev (
     require => Service[mogilefsd]
   }
 
-  file { [
-    $rootfolder,
-    "${rootfolder}/127.0.0.20",
-    "${rootfolder}/127.0.0.20/dev1"]:
+  file { [$datapath, "${datapath}/127.0.0.20", "${datapath}/127.0.0.20/dev1"]:
     ensure => 'directory',
     mode   => '0644',
     owner  => 'mogilefs'
@@ -75,7 +73,7 @@ class mogilefs::dev (
     require => Service[mogilefsd]
   }
 
-  file { ["${rootfolder}/127.0.0.20/dev2"]:
+  file { ["${datapath}/127.0.0.20/dev2"]:
     ensure => 'directory',
     mode   => '0644',
     owner  => 'mogilefs'
@@ -100,7 +98,7 @@ class mogilefs::dev (
     require => Service[mogilefsd]
   }
 
-  file { ["${rootfolder}/127.0.0.25", "${rootfolder}/127.0.0.25/dev3"]:
+  file { ["${datapath}/127.0.0.25", "${datapath}/127.0.0.25/dev3"]:
     ensure => 'directory',
     mode   => '0644',
     owner  => 'mogilefs'
@@ -115,7 +113,7 @@ class mogilefs::dev (
     require => Service[mogilefsd]
   }
 
-  file { ["${rootfolder}/127.0.0.25/dev4"]:
+  file { ["${datapath}/127.0.0.25/dev4"]:
     ensure => 'directory',
     mode   => '0644',
     owner  => 'mogilefs'
@@ -140,7 +138,7 @@ class mogilefs::dev (
     require => Service[mogilefsd]
   }
 
-  file { ["${rootfolder}/127.0.15.5", "${rootfolder}/127.0.15.5/dev5"]:
+  file { ["${datapath}/127.0.15.5", "${datapath}/127.0.15.5/dev5"]:
     ensure => 'directory',
     mode   => '0644',
     owner  => 'mogilefs'
@@ -155,7 +153,7 @@ class mogilefs::dev (
     require => Service[mogilefsd]
   }
 
-  file { ["${rootfolder}/127.0.15.5/dev6"]:
+  file { ["${datapath}/127.0.15.5/dev6"]:
     ensure => 'directory',
     mode   => '0644',
     owner  => 'mogilefs'
@@ -180,7 +178,7 @@ class mogilefs::dev (
     require => Service[mogilefsd]
   }
 
-  file { ["${rootfolder}/127.0.15.10", "${rootfolder}/127.0.15.10/dev7"]:
+  file { ["${datapath}/127.0.15.10", "${datapath}/127.0.15.10/dev7"]:
     ensure => 'directory',
     mode   => '0644',
     owner  => 'mogilefs'
@@ -195,7 +193,7 @@ class mogilefs::dev (
     require => Service[mogilefsd]
   }
 
-  file { ["${rootfolder}/127.0.15.10/dev8"]:
+  file { ["${datapath}/127.0.15.10/dev8"]:
     ensure => 'directory',
     mode   => '0644',
     owner  => 'mogilefs'
