@@ -44,6 +44,10 @@ class mogilefs (
   $mogilefsd_service = true,
   $mogstored_service = true,
   $config_dir        = '/etc/mogilefs',
+  $config_file_mode  = '0644',
+  $config_file_owner = 'mogilefs',
+  $config_file_group = 'mogilefs',
+  $package           = 'MogileFS::Server',
   $dbtype            = 'SQLite',
   $dbname            = 'mogilefs',
   $dbuser            = '',
@@ -60,11 +64,7 @@ class mogilefs (
   }
 
   # Core parameters
-  $package = 'MogileFS::Server'
   $username = 'mogilefs'
-  $config_file_mode = '0644'
-  $config_file_owner = $mogilefs::username
-  $config_file_group = $mogilefs::username
 
   $manage_mogstored_init_content = template('mogilefs/mogstored.init.Debian.erb'
   )

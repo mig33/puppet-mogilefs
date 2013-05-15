@@ -18,7 +18,7 @@ class mogilefs::mogstored inherits mogilefs {
   file { 'mogstored_datapath':
     ensure => 'directory',
     path   => $mogilefs::datapath,
-    mode   => '0644',
+    mode   => '0664',
     owner  => $mogilefs::config_file_owner,
     group  => $mogilefs::config_file_group,
   }

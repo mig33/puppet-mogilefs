@@ -7,6 +7,9 @@ class mogilefs::dev (
     'listen' => '127.0.1.5:7001'
   }
   ,
+  $config_file_mode       = '0644',
+  $config_file_owner      = 'mogilefs',
+  $config_file_group      = 'mogilefs',
   $dbtype                 = 'SQLite',
   $dbname                 = 'mogilefs',
   $datapath               = '/var/mogdata',
@@ -15,6 +18,9 @@ class mogilefs::dev (
   class { 'mogilefs':
     dbtype            => $mogilefs::dev::dbtype,
     dbname            => $mogilefs::dev::dbname,
+    config_file_mode  => $config_file_mode,
+    config_file_owner => $config_file_owner,
+    config_file_group => $config_file_group,
     mogstored_service => false,
     trackers          => '127.0.1.5:7001',
     datapath          => $datapath,
