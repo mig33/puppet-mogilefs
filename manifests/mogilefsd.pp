@@ -38,10 +38,11 @@ mogilefs {
 
   # Set up database
   $databasepackage = $mogilefs::mogilefsd::dbtype ? {
-    'Mysql'    => 'DBD::Mysql',
-    'Postgres' => 'DBD::Postgres',
+    'Mysql'    => 'DBD::mysql',
+    'Postgres' => 'DBD::Pg',
     'SQLite'   => 'DBD::SQLite',
-    default    => fail("Unsupported dbtype: ${mogilefs::mogilefsd::dbtype}"),
+    default    => fail("Dbtype must be one of: 'Mysql', 'Postgres' or \
+      'SQLite'. Got: ${mogilefs::mogilefsd::dbtype}"),
   }
 
   package { $databasepackage:
