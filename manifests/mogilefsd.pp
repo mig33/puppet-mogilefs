@@ -1,9 +1,9 @@
 # Not meant to be used by it's own - but included by parent mogilefs class
-class mogilefs::mogilefsd ($dbtype = 'SQLite', $dbname = 'mogilefs')
-  inherits mogilefs {
+class mogilefs::mogilefsd ($dbtype = 'SQLite', $dbname = 'mogilefs') inherits
+mogilefs {
   file { 'mogilefsd.conf':
     ensure  => $mogilefs::manage_file,
-    path    => "$mogilefs::config_dir/mogilefsd.conf",
+    path    => "${mogilefs::config_dir}/mogilefsd.conf",
     mode    => $mogilefs::config_file_mode,
     owner   => $mogilefs::config_file_owner,
     group   => $mogilefs::config_file_group,
@@ -41,7 +41,7 @@ class mogilefs::mogilefsd ($dbtype = 'SQLite', $dbname = 'mogilefs')
     'Mysql'    => 'DBD::Mysql',
     'Postgres' => 'DBD::Postgres',
     'SQLite'   => 'DBD::SQLite',
-    default    => fail("Unsupported dbtype: $mogilefs::mogilefsd::dbtype"),
+    default    => fail("Unsupported dbtype: ${mogilefs::mogilefsd::dbtype}"),
   }
 
   package { $databasepackage:
@@ -53,7 +53,8 @@ class mogilefs::mogilefsd ($dbtype = 'SQLite', $dbname = 'mogilefs')
   }
 
   exec { 'mogdbsetup':
-    command     => "mogdbsetup --type=$mogilefs::mogilefsd::dbtype --yes --dbname=$mogilefs::mogilefsd::dbname --verbose",
+    command     => "mogdbsetup --type=${mogilefs::mogilefsd::dbtype} --yes \
+            --dbname=${mogilefs::mogilefsd::dbname} --verbose",
     path        => ['/usr/bin', '/usr/sbin', '/usr/local/bin'],
     subscribe   => Package['MogileFS::Server'],
     refreshonly => true,

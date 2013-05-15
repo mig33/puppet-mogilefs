@@ -2,7 +2,7 @@
 class mogilefs::mogstored inherits mogilefs {
   file { 'mogstored.conf':
     ensure  => $mogilefs::manage_file,
-    path    => "$mogilefs::config_dir/mogstored.conf",
+    path    => "${mogilefs::config_dir}/mogstored.conf",
     mode    => $mogilefs::config_file_mode,
     owner   => $mogilefs::config_file_owner,
     group   => $mogilefs::config_file_group,
@@ -53,14 +53,18 @@ class mogilefs::mogstored inherits mogilefs {
   # Add mogstored host to tracker
   exec { 'mogilefs_addhost':
     path    => ['/bin', '/usr/local/bin', '/usr/bin'],
-    command => "mogadm --trackers=$mogilefs::trackers host add ${::hostname} --ip=${::fqdn} --status=alive",
-    unless  => "mogadm --trackers=$mogilefs::trackers host list | grep \s${::hostname}",
+    command => "mogadm --trackers=${mogilefs::real_trackers} \
+      host add ${::hostname} --ip=${::fqdn} --status=alive",
+    unless  => "mogadm --trackers=${mogilefs::real_trackers} \
+      host list | grep \s${::hostname}",
     require => Service[mogilefsd]
   }
 
   exec { 'mogilefs_enablehost':
     path    => ['/bin', '/usr/local/bin', '/usr/bin'],
-    command => "mogadm --trackers=$mogilefs::trackers host mark ${::hostname} alive",
-    unless  => "mogadm --trackers=$mogilefs::trackers host list | grep ^${::hostname}.*alive",
+    command => "mogadm --trackers=${mogilefs::real_trackers} \
+      host mark ${::hostname} alive",
+    unless  => "mogadm --trackers=${mogilefs::real_trackers} \
+      host list | grep ^${::hostname}.*alive",
   }
 }
