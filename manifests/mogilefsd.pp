@@ -1,6 +1,12 @@
 # Not meant to be used by it's own - but included by parent mogilefs class
 class mogilefs::mogilefsd ($dbtype = 'SQLite', $dbname = 'mogilefs') inherits
 mogilefs {
+  $real_mogilefsd_config = $mogilefs::mogilefsd_config ? {
+    ''      => template('mogilefs/mogilefsd.conf.erb'),
+    default => $mogilefs::mogilefsd_config,
+
+  }
+
   file { 'mogilefsd.conf':
     ensure  => $mogilefs::manage_file,
     path    => "${mogilefs::config_dir}/mogilefsd.conf",
@@ -9,7 +15,7 @@ mogilefs {
     group   => $mogilefs::config_file_group,
     require => Package[$mogilefs::package],
     notify  => Service['mogilefsd'],
-    content => template('mogilefs/mogilefsd.conf.erb'),
+    content => $mogilefs::mogilefsd::real_mogilefsd_config,
     replace => $mogilefs::manage_file_replace,
     audit   => $mogilefs::manage_audit,
     noop    => $mogilefs::noops,
