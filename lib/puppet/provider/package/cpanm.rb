@@ -7,8 +7,8 @@ Puppet::Type.type(:package).provide :cpanm, :parent => Puppet::Provider::Package
 
   has_feature :installable, :upgradeable
 
-  confine  :exists => ['/usr/bin/cpanm', '/usr/bin/perldoc']
-  commands :cpanm  => '/usr/bin/cpanm'
+  confine  :exists => ['/usr/local/bin/cpanm', '/usr/bin/perldoc']
+  commands :cpanm  => '/usr/local/bin/cpanm'
 
   # Return structured information about all installed Modules
   def self.instances
@@ -55,7 +55,7 @@ Puppet::Type.type(:package).provide :cpanm, :parent => Puppet::Provider::Package
   # Return the latest available version of a particular module
   def latest
     dist_re     = %r{(.*?)(\w+-?)+((\d+\.?)+)\.(\w+\.?)+}
-    latest_dist = %x{/usr/bin/cpanm --info #{@resource[:name]}}
+    latest_dist = %x{/usr/local/bin/cpanm --info #{@resource[:name]}}
     if latest_dist =~ dist_re
       $3
     else
