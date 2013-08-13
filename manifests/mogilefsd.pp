@@ -55,7 +55,7 @@ mogilefs {
     ensure   => $mogilefs::manage_package,
     noop     => $mogilefs::noops,
     provider => 'cpanm',
-    require  => Package['cpanminus'],
+    require  => Exec['install-cpanm'],
     before   => Exec[mogdbsetup]
   }
 

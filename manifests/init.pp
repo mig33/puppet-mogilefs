@@ -112,19 +112,23 @@ class mogilefs (
   }
 
   # Package
-  if !defined(Package['cpanminus']) {
-    package { 'cpanminus': ensure => installed }
+  package { [
+      "perl-ExtUtils-MakeMaker",
+      "perl-Parse-CPAN-Meta"
+    ]:
+    ensure => present;
   }
-
-  if !defined(Package['perl-doc']) {
-    package { 'perl-doc': ensure => installed }
+  exec { "install-cpanm":
+    command => "/usr/bin/curl -L http://cpanmin.us | /usr/bin/perl - --sudo App::cpanminus",
+    creates => '/usr/local/bin/cpanm',
+    require => Package["perl-ExtUtils-MakeMaker", "perl-Parse-CPAN-Meta"]
   }
 
   package { $mogilefs::package:
     ensure   => $mogilefs::manage_package,
     noop     => $mogilefs::noops,
     provider => 'cpanm',
-    require  => Package['cpanminus'],
+    require  => Exec['install-cpanm'],
   }
 
   # Client
@@ -132,7 +136,7 @@ class mogilefs (
     ensure   => $mogilefs::manage_package_dependencies,
     noop     => $mogilefs::noops,
     provider => 'cpanm',
-    require  => Package['cpanminus'],
+    require  => Exec['install-cpanm'],
   }
 
   # Mogstored
