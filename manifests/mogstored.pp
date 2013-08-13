@@ -64,6 +64,7 @@ class mogilefs::mogstored inherits mogilefs {
       host add ${::hostname} --ip=${::fqdn} --status=alive",
       unless  => "mogadm --trackers=${mogilefs::real_trackers} \
       host list | grep \s${::hostname}",
+      require => Package[$mogilefs::package]
     }
 
     exec { 'mogilefs_enablehost':
@@ -72,6 +73,7 @@ class mogilefs::mogstored inherits mogilefs {
       host mark ${::hostname} alive",
       unless  => "mogadm --trackers=${mogilefs::real_trackers} \
       host list | grep ^${::hostname}.*alive",
+      require => Package[$mogilefs::package]
     }
   }
 }
